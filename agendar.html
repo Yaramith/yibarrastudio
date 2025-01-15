@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Cita - Yibarra Studio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background: #fdfdfd;
+        }
+        h1 {
+            color: #e88bb7;
+        }
+        .calendar, .month-selection, .time-selection {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .calendar button, .month-selection button, .time-selection button {
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            background: #e88bb7;
+            color: white;
+            cursor: pointer;
+        }
+        .calendar button.selected, .month-selection button.selected, .time-selection button.selected {
+            background: #f06292;
+        }
+        button#send-whatsapp {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #e88bb7;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .menu-btn {
+            background: #f7b2d9;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+</button>
+        <a href="index.html"><button class="menu-btn">Volver al Inicio</button></a>
+<body>
+    <h1>Agendar Cita</h1>
+
+    <h2>Selecciona el mes</h2>
+    <div class="month-selection">
+        <button onclick="selectMonth(this, 31)">Enero</button>
+        <button onclick="selectMonth(this, 28)">Febrero</button>
+        <button onclick="selectMonth(this, 31)">Marzo</button>
+        <button onclick="selectMonth(this, 30)">Abril</button>
+        <button onclick="selectMonth(this, 31)">Mayo</button>
+        <button onclick="selectMonth(this, 30)">Junio</button>
+        <button onclick="selectMonth(this, 31)">Julio</button>
+        <button onclick="selectMonth(this, 31)">Agosto</button>
+        <button onclick="selectMonth(this, 30)">Septiembre</button>
+        <button onclick="selectMonth(this, 31)">Octubre</button>
+        <button onclick="selectMonth(this, 30)">Noviembre</button>
+        <button onclick="selectMonth(this, 31)">Diciembre</button>
+    </div>
+
+    <h2>Selecciona el día</h2>
+    <div class="calendar" id="calendar">
+        <!-- Los días se generarán dinámicamente -->
+    </div>
+
+    <h2>Selecciona la hora</h2>
+    <div class="time-selection">
+        <!-- Horarios -->
+        <button onclick="selectTime(this)">10:00 AM</button>
+        <button onclick="selectTime(this)">12:00 PM</button>
+        <button onclick="selectTime(this)">4:00 PM</button>
+    </div>
+
+    <button id="send-whatsapp" onclick="sendToWhatsApp()">Agendar por WhatsApp</button>
+
+    <script>
+        let selectedMonth = "";
+        let selectedDate = "";
+        let selectedTime = "";
+
+        function selectMonth(element, daysInMonth) {
+            // Deseleccionar todos los meses
+            document.querySelectorAll(".month-selection button").forEach(btn => btn.classList.remove("selected"));
+            // Seleccionar el mes actual
+            element.classList.add("selected");
+            selectedMonth = element.innerText;
+            // Generar días según el mes seleccionado
+            generateDays(daysInMonth);
+        }
+
+        function generateDays(daysInMonth) {
+            const calendar = document.getElementById("calendar");
+            calendar.innerHTML = ""; // Limpiar los días existentes
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayButton = document.createElement("button");
+                dayButton.innerText = i.toString().padStart(2, '0');
+                dayButton.onclick = () => selectDate(dayButton);
+                calendar.appendChild(dayButton);
+            }
+        }
+
+        function selectDate(element) {
+            // Deseleccionar todos los días
+            document.querySelectorAll(".calendar button").forEach(btn => btn.classList.remove("selected"));
+            // Seleccionar el día actual
+            element.classList.add("selected");
+            selectedDate = element.innerText;
+        }
+
+        function selectTime(element) {
+            // Deseleccionar todas las horas
+            document.querySelectorAll(".time-selection button").forEach(btn => btn.classList.remove("selected"));
+            // Seleccionar la hora actual
+            element.classList.add("selected");
+            selectedTime = element.innerText;
+        }
+
+        function sendToWhatsApp() {
+            if (selectedMonth && selectedDate && selectedTime) {
+                const phoneNumber = "1234567890"; // Reemplazar con tu número de WhatsApp
+                const message = `Hola, quiero agendar una cita para el día ${selectedDate} de ${selectedMonth} a las ${selectedTime}`;
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, "_blank");
+            } else {
+                alert("Por favor, selecciona un mes, un día y una hora antes de agendar.");
+            }
+        }
+    </script>
+<footer>
+        <p>© 2024 Yibarra Studio. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
